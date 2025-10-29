@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATTENDEE HOME</title>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+	<link rel="stylesheet" type="text/css" href="/vendor/animate/animate.css">
+	<link rel="stylesheet" type="text/css" href="/vendor/css-hamburgers/hamburgers.min.css">
+	<link rel="stylesheet" type="text/css" href="/vendor/animsition/css/animsition.min.css">
+	<link rel="stylesheet" type="text/css" href="/vendor/select2/select2.min.css">
+	<link rel="stylesheet" type="text/css" href="/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/css/util.css">
+	<link rel="stylesheet" type="text/css" href="/css/main.css">
+</head>
+<body>
+	<div class="limiter">
+		<div class="main-container" style="background-image: url('/images/bg-01.jpg');">
+			<div class="home-wrap p-l-110 p-r-110 p-t-62 p-b-33">
+				<span class="main-form-title p-b-53">
+					ATTENDEE HOME PAGE
+				</span>
+
+				<% if (organisers === 0) { %>
+					<div class="event-box m-b-10">
+						<p class="txt1">No Upcoming Events Yet.</p>
+					</div>
+				<% } else { %>	
+					<% Object.values(organisers).forEach(organiser => { %>
+						<div class="info-box">
+							<span class="settings-name">
+								<%= organiser.name %>
+							</span>
+
+							<span class="settings-desc">
+								<%= organiser.desc %>
+							</span>
+						</div>
+
+						<ul>
+							<% organiser.events.forEach(event => { %>
+								<li>
+									<div class="event-box m-b-10">
+										<a href="/user/event/<%= event.id %>" class="event-title p-b-10">
+											<%= event.title %>
+										</a>
+
+										<span class="event-title p-b-10">
+											Event Date: <%= new Date(event.date).toLocaleDateString() %>
+										</span>
+									</div>
+								</li>
+							<% }) %>
+						</ul>
+					<% }) %>
+				<% } %>
+
+				<a href="/" class="button">
+					RETURN BACK
+					<span class="focus-input"></span>
+				</a>
+			</div>
+		</div>
+	</div>
+	
+<!--===============================================================================================-->
+	<script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script src="/vendor/animsition/js/animsition.min.js"></script>
+	<script src="/vendor/bootstrap/js/popper.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/vendor/select2/select2.min.js"></script>
+	<script src="/vendor/daterangepicker/moment.min.js"></script>
+	<script src="/vendor/daterangepicker/daterangepicker.js"></script>
+	<script src="/vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+</body>
+</html>

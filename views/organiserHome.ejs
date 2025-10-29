@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVENT PORTAL</title>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+	<link rel="stylesheet" type="text/css" href="/vendor/animate/animate.css">
+	<link rel="stylesheet" type="text/css" href="/vendor/css-hamburgers/hamburgers.min.css">
+	<link rel="stylesheet" type="text/css" href="/vendor/animsition/css/animsition.min.css">
+	<link rel="stylesheet" type="text/css" href="/vendor/select2/select2.min.css">
+	<link rel="stylesheet" type="text/css" href="/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/css/util.css">
+	<link rel="stylesheet" type="text/css" href="/css/main.css">
+</head>
+<body>
+	<div class="limiter">
+		<div class="main-container" style="background-image: url('/images/bg-01.jpg');">
+			<div class="home-wrap p-l-110 p-r-110 p-t-62 p-b-33">
+				<span class="main-form-title p-b-53">
+					ORGANISER EVENT PORTAL
+				</span>
+				<div class="info-box">
+					<span class="settings-name">
+						Welcome <%= settings.organiserName %>
+					</span>
+
+					<span class="settings-desc">
+						<%= settings.organiserDesc %>
+					</span>
+				</div>
+
+				<nav>
+					<ul>
+						<li>
+							<form action="/organiser/create" method="GET" class="button">
+								<button type="submit">New Draft</button>
+							</form>
+						</li>
+						<li><a href="/organiser/settings" class="button">Settings</a></li>
+						<li>
+							<form action="/organiser/logout" method="POST" class="button">
+								<button type="submit">Log out</button>
+							</form>
+						</li>
+					</ul>
+				</nav>
+
+				<span class="draft-publish-title">
+					PUBLISHED EVENT
+				</span>
+
+				<% if (publishedEvent.length === 0) { %>
+					<div class="event-box m-b-10">
+						<p class="txt1">No published events yet.</p>
+					</div>
+				<% } else { %>
+					<ul>
+						<% publishedEvent.forEach(event => { %>
+							<li>
+								<div class="event-box m-b-10">
+									<a href="/user/event/<%= event.id %>" class="event-title p-b-30">
+										<%= event.title %>
+									</a>
+
+									<span class="event-title p-b-10">
+										Event Date: <%= new Date(event.date).toLocaleDateString() %>
+									</span>
+
+									<div class="ticket-container">
+										<div class="ticket-item">Ticket Type</div>
+										<div class="ticket-item">No. of Tickets</div>
+										<div class="ticket-item">Price</div>
+									</div>
+
+									<ul class="custom-ticket-list">
+										<% (ticketMap[event.id] || []).forEach(ticket => { %>
+											<li>
+												<div class="ticket-container">
+													<div class="ticket-item">
+														<%= ticket.type %>
+													</div>
+													<div class="ticket-item">
+														<%= ticket.amount %> Tickets
+													</div>
+													<div class="ticket-item">
+														$<%= ticket.price %>
+													</div>
+												</div>
+											</li>
+										<% }) %>
+									</ul>
+
+									<form class="container-form-btn m-t-17" action="/organiser/delete/<%= event.id %>" method="POST">
+										<button class="btn-delete" type="submit" onclick="return confirm('Are you sure you want to delete this event?')" >
+											DELETE
+										</button>
+									</form>
+
+									<div class="status p-t-15">
+										<span class="status-span p-b-20">Created: <%= new Date(event.created_at).toLocaleDateString() %></span>
+										<span class="status-span p-b-20">Last Modified: <%= new Date(event.last_modified).toLocaleDateString() %></span>
+										<span class="status-span p-b-20">Published on: <%= new Date(event.published_date).toLocaleDateString() %></span>
+										<span class="status-span p-b-20">Views: <%= event.views %> </span>
+									</div>
+								</div>
+							</li>
+						<% }) %>
+					</ul>
+				<% } %>
+
+				<span class="draft-publish-title">
+					DRAFT EVENT
+				</span>
+
+				<% if (draftEvent.length === 0) { %>
+					<div class="event-box m-b-10">
+						<p class="txt1">No draft articles.</p>
+					</div>
+				<% } else { %>
+					<ul>
+						<% draftEvent.forEach(event => { %>
+							<li>
+								<div class="event-box m-b-10">
+									<a href="/organiser/edit/<%= event.id %>" class="event-title p-b-30">
+										<%= event.title %>
+									</a>
+
+									<span class="event-title p-b-10">
+										Event Date: <%= new Date(event.date).toLocaleDateString() %>
+									</span>
+
+									<div class="ticket-container">
+										<div class="ticket-item p-r-40">Ticket Type</div>
+										<div class="ticket-item p-r-40">No. of Tickets</div>
+										<div class="ticket-item p-r-40">Price</div>
+									</div>
+
+									<ul class="custom-ticket-list">
+										<% (ticketMap[event.id] || []).forEach(ticket => { %>
+											<li>
+												<div class="ticket-container">
+													<div class="ticket-item p-r-40">
+														<%= ticket.type %>
+													</div>
+													<div class="ticket-item p-r-40">
+														<%= ticket.amount %> Tickets
+													</div>
+													<div class="ticket-item p-r-40">
+														$<%= ticket.price %>
+													</div>
+												</div>
+											</li>
+										<% }) %>
+									</ul>
+
+									<form class="container-form-btn m-t-17" action="/organiser/publish/<%= event.id %>" method="POST">
+										<button class="btn-transparent" type="submit">
+											PUBLISH
+										</button>
+									</form>
+
+									<form class="container-form-btn m-t-17" action="/organiser/delete/<%= event.id %>" method="POST">
+										<button class="btn-delete" type="submit" onclick="return confirm('Are you sure you want to delete this event?')">
+											DELETE
+										</button>
+									</form>
+
+									<div class="status p-t-15">
+										<span class="status-span p-b-20">Created: <%= new Date(event.created_at).toLocaleDateString() %></span>
+										<span class="status-span p-b-20">Last Modified: <%= new Date(event.last_modified).toLocaleDateString() %></span>
+										<span class="status-span p-b-20">Published on: Nil</span>
+									</div>
+								</div>
+
+							</li>
+						<% }) %>
+					</ul>
+				<% } %>
+			</div>
+
+		</div>
+	</div>
+
+<!--===============================================================================================-->
+	<script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script src="/vendor/animsition/js/animsition.min.js"></script>
+	<script src="/vendor/bootstrap/js/popper.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/vendor/select2/select2.min.js"></script>
+	<script src="/vendor/daterangepicker/moment.min.js"></script>
+	<script src="/vendor/daterangepicker/daterangepicker.js"></script>
+	<script src="/vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+</body>
+</html>

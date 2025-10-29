@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVENT - <%= events.title %></title>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+	<link rel="stylesheet" type="text/css" href="/vendor/animate/animate.css">
+	<link rel="stylesheet" type="text/css" href="/vendor/css-hamburgers/hamburgers.min.css">
+	<link rel="stylesheet" type="text/css" href="/vendor/animsition/css/animsition.min.css">
+	<link rel="stylesheet" type="text/css" href="/vendor/select2/select2.min.css">
+	<link rel="stylesheet" type="text/css" href="/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/css/util.css">
+	<link rel="stylesheet" type="text/css" href="/css/main.css">
+</head>
+<body>
+	<div class="limiter">
+		<div class="main-container2" style="background-image: url('/images/bg-01.jpg');">
+			<div class="home-wrap p-l-110 p-r-110 p-t-62 p-b-33">
+                <form class="main-form" method="POST" action="/user/event/<%= events.id %>">
+                    <span class="main-form-title p-b-33">
+                        ATTENDEE EVENT
+                    </span>
+
+                    <div class="event-box m-b-10 ">
+                        <span class="event-title p-b-10">
+                            <%= events.title %>
+                            <span class="focus-input"></span>
+                        </span>
+
+                        <span class="event-title p-b-10">
+                            Date: <%= new Date(events.date).toLocaleDateString() %>
+                            <span class="focus-input"></span>
+                        </span>
+
+                        <span class="event-title p-b-10">
+                            <p class="attendee-event"><%- events.desc.replace(/\n/g, '<br>') %></p>
+                        </span>
+                    </div>
+
+                    <% if (!organiserLoggedIn) { %>
+                        <div class="event-box m-b-10">
+                            <div class="event-title p-b-10">
+                                <label class="txt1">Name:</label>
+                                <input type="text" name="name" placeholder="Enter name" required>
+                                <span class="focus-input"></span>
+                            </div>
+
+                            <div class="ticket-container">
+                                <div class="ticket-item p-r-40">Ticket Type</div>
+                                <div class="ticket-item p-r-40">Price</div>
+                                <div class="ticket-item p-r-40">No. of Tickets</div>
+                                <div class="ticket-item p-r-40"></div>
+                            </div>
+
+                            <% if (ticketType.length === 0) { %>
+                                <span class="event-title p-b-53">
+                                    <div class="txt1">
+                                        No Ticket.
+                                    </div>
+                                </span>
+                            <% } else { %>
+                                <ul class="custom-ticket-list">
+                                    <% ticketType.forEach(ticket => { %>
+                                        <li>
+                                            <div class="ticket-container">
+                                                <div class="ticket-item p-r-40">
+                                                    <%= ticket.type %>
+                                                </div>
+                                                <div class="ticket-item p-r-40">
+                                                    $<%= ticket.price %> 
+                                                </div>
+                                                
+                                                <div class="ticket-item p-r-40">
+                                                    <input type="number" name="amount" value="0" min="0" max="<%= ticket.amount %>">
+                                                    <input type="hidden" name="ticket" value="<%= ticket.amount %>"> 
+                                                    Tickets
+                                                </div>
+                                                <div class="ticket-item p-r-40">
+                                                    <%= ticket.amount %> Left
+                                                    <input type="hidden" name="category" value="<%= ticket.type %>">
+                                                </div>
+                                            </div>
+                                        </li>
+                                    <% }) %>
+                                </ul>
+                            <% } %>      
+                            <button type="submit"  class="btn-transparent m-b-15">SUBMIT</button>
+                        </div>
+                    <% } else { %>
+                        <div class="event-box">
+                            <div class="ticket-container">
+                                <div class="ticket-item">Booking ID</div>
+                                <div class="ticket-item">Name</div>
+                                <div class="ticket-item">Ticket Type</div>
+                                <div class="ticket-item"></div>
+                            </div>
+
+                            <% if (booking.length === 0) { %>
+                                <span class="event-title p-b-53">
+                                    <div class="txt1">
+                                        No Booking.
+                                    </div>
+                                </span>
+                            <% } else { %>
+                                <ul class="custom-ticket-list">
+                                    <% booking.forEach(books => { %>
+                                        <li>
+                                            <div class="ticket-container">
+                                                <div class="ticket-item">
+                                                    <%= books.id %>
+                                                </div>
+                                                <div class="ticket-item">
+                                                    <%= books.name %> 
+                                                </div>
+                                                <div class="ticket-item">
+                                                    <%= books.type %>
+                                                </div>
+                                                <div class="ticket-item">
+                                                    <%= books.amount %> Tickets
+                                                </div>
+                                            </div>
+                                        </li>
+                                    <% }) %>
+                                </ul>
+                            <% } %>      
+                        </div>
+                    <% } %>  
+                </form>
+                <form method="GET" class="button" action="<%= organiserLoggedIn ? '/organiser/home' : '/user/home' %>">
+                    <button class="btn-tranparent">
+                        <%= organiserLoggedIn ? 'Back to Organiser Page' : 'Back to Attendee Page' %>
+                    </button>
+                </form>
+            </div>
+		</div>
+	</div>
+
+<!--===============================================================================================-->
+	<script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script src="/vendor/animsition/js/animsition.min.js"></script>
+	<script src="/vendor/bootstrap/js/popper.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/vendor/select2/select2.min.js"></script>
+	<script src="/vendor/daterangepicker/moment.min.js"></script>
+	<script src="/vendor/daterangepicker/daterangepicker.js"></script>
+	<script src="/vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+</body>
+</html>
