@@ -18,7 +18,7 @@ Authentication: Express-Session
 Optional: bcrypt for password hashing
 
 ### Folder Structure ###
-├── views/ # Contains all the ejs html pages
+├── views/ # Contains all the ejs html pages <br>
 ├── routes/ # Express routes
 ├── public/ # Contains all the css,fonts images and vendors
 ├── index.js # Main Express app setup
