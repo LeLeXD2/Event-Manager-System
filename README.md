@@ -19,12 +19,12 @@ Optional: bcrypt for password hashing
 
 ### Folder Structure ###
 ├── views/ # Contains all the ejs html pages <br>
-├── routes/ # Express routes
-├── public/ # Contains all the css,fonts images and vendors
-├── index.js # Main Express app setup
-├── db_schema.sql # SQLite3 database
-|── README.md # Project documentation
-└── sqlite.exe # The sqlite3 program for the database
+├── routes/ # Express routes <br>
+├── public/ # Contains all the css,fonts images and vendors <br>
+├── index.js # Main Express app setup <br>
+├── db_schema.sql # SQLite3 database <br>
+|── README.md # Project documentation <br>
+└── sqlite.exe # The sqlite3 program for the database <br>
 
 #### Installation requirements ####
 
@@ -59,21 +59,3 @@ You can also run:
 * All database tables should created by modifying the db_schema.sql 
 * This allows us to review and recreate your database simply by running ```npm run build-db```
 * Do NOT create or alter database tables through other means
-
-
-#### Preparing for submission ####
-
-Make a copy of your project folder.
-In your copy, delete the following files and folders:
-* node_modules
-* .git (the hidden folder with your git repository)
-* database.db (your database)
-
-Make sure that your ``package.json`` file includes all of the dependencies for your project. NB. you need to use the ```--save``` tag each time you use npm to install a dependency
-
-Edit this README.md to explain any specific instructions for setting up or using your application that you want to bring to our attention:
-
-* remove the existing contents that we have provided
-* include any settings that should be adjusted in configuration files
-* include a list of the additional libraries you are using
-* anything else we need to know in order to successfully run your app
